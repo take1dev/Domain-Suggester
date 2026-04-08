@@ -1,78 +1,79 @@
-# Domain Suggest & Checker
+<div align="center">
+  <img src="Icon.png" alt="Icon" width="120" height="auto" />
+  <h1>Domain Suggest & Checker</h1>
+  
+  <p>
+    <strong>A high-performance, asynchronous Rust GUI application that leverages state-of-the-art Generative AI to brainstorm unique, brandable domain names and instantly verifies their registration availability.</strong>
+  </p>
+  
+  <p>
+    <a href="https://rust-lang.org"><img src="https://img.shields.io/badge/Rust-1.75+-orange.svg?style=flat-square&logo=rust" alt="Rust Version" /></a>
+    <a href="https://github.com/emilk/egui"><img src="https://img.shields.io/badge/GUI-egui_0.31-blue.svg?style=flat-square" alt="GUI Framework" /></a>
+    <a href="https://tokio.rs"><img src="https://img.shields.io/badge/Async-Tokio-yellow.svg?style=flat-square" alt="Async Runtime" /></a>
+    <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-green.svg?style=flat-square" alt="License" /></a>
+  </p>
+</div>
 
-A high-performance, asynchronous Rust GUI application that leverages state-of-the-art Generative AI to brainstorm unique, brandable domain names and instantly verifies their registration availability utilizing concurrent RDAP and WhoisFreaks lookup pipelines.
+---
 
-## Key Features
+## ✨ Key Features
 
-*   **AI-Powered Generation**: Employs fine-tuned system prompts to construct concise, catchy, and readable brand names while avoiding typical generative hallucination.
-*   **Multi-LLM Architecture**: Supports both local inference via **Ollama** and cloud inference via **OpenRouter**, including dynamic fetching of the newest available free-tier cloud models.
-*   **Highly Concurrent Validation**: Utilizes a bounded, multi-threaded `Tokio` backend to fan-out asynchronous domain availability checks (RDAP/Whois) without blocking the user interface.
-*   **Responsive Native UI**: Constructed fully in Rust utilizing the immediate-mode `eframe`/`egui` framework for a seamless, cross-platform user experience.
-*   **Persistent User Context**: Features lightweight I/O endpoints to locally save and restore search criteria profiles and securely maintain API credentials across runtimes.
+* 🧠 **AI-Powered Generation**: Employs fine-tuned system prompts and Brand Archetypes to construct concise, catchy, and readable brand names avoiding typical generative hallucination.
+* ⚡ **Ultra-Fast Mass Verification**: Utilizes a highly concurrent `tokio` multi-threading engine to fan out availability checks across Unlimited DNS, WhoisFreaks pipelines, or RDAP.
+* 🌐 **Multi-LLM Architecture**: Run local inference securely via **Ollama** or tap into powerful cloud models for free using **OpenRouter** (Llama 3, Gemma, Mistral, Qwen). 
+* 🎨 **Premium Native UI**: Beautiful Deep Navy aesthetic constructed entirely in Rust via the immediate-mode `eframe`/`egui` framework. Responsive, cross-platform, and blazing fast.
+* 💾 **Persistent Contextual Engine**: Lightweight state-saving natively remembers your workflow configurations, selected models, and securely binds API keys through OS-level keychains.
 
-## Installation
+## 🛠️ Tech Stack
 
-This application requires the standard Rust toolchain to compile. 
+- **Core**: [Rust](https://www.rust-lang.org/)
+- **Frontend / GUI**: [egui](https://github.com/emilk/egui) / [eframe](https://crates.io/crates/eframe)
+- **Concurrency / Async**: [Tokio](https://tokio.rs/)
+- **Networking**: [Reqwest](https://docs.rs/reqwest/) HTTP client
+- **AI Integration**: [OpenRouter API](https://openrouter.ai/) & [Ollama Local REST API](https://ollama.com/)
 
-**Dependencies:**
-*   `cargo` & `rustc` (Edition 2021)
-*   `eframe` / `egui_extras` (UI Framework)
-*   `tokio` (Asynchronous runtime engine)
-*   `reqwest` (HTTP Client for LLM and RDAP polling)
-*   `winres` (Automated Windows `.ico` embedding)
+---
 
-To install and compile the software:
+## 🚀 Installation & Setup
+
+All you need is a standard Rust toolchain to get started.
+
+### 1. Clone the repository
 ```bash
-# Clone the repository
-git clone https://github.com/your-username/domain-suggest.git
-cd domain-suggest
+git clone https://github.com/take1dev/Domain-Suggester.git
+cd Domain-Suggester
+```
 
-# Build the release binary
+### 2. Build from Source
+```bash
+# Compile optimal release binary
 cargo build --release
-
-# The compiled output will be available at target/release/domain-suggest.exe
 ```
 
-## Quick Start & Usage
+**Note for Windows Users:** The build process automatically bundles the `Icon.png` into the executable metadata utilizing the `winres` crate.
 
-Simply run the application using `cargo run`. The application architecture explicitly spins up a dedicated `tokio` runtime on the primary thread before orchestrating the native windowing event loop.
-
-```rust
-use eframe::egui;
-
-fn main() -> eframe::Result<()> {
-    // 1. Spawn the asynchronous Tokio runtime in the background
-    let _rt = tokio::runtime::Builder::new_multi_thread()
-        .enable_all()
-        .build()
-        .expect("Failed to initialize Tokio runtime");
-
-    // 2. Configure windowing options
-    let options = eframe::NativeOptions {
-        viewport: egui::ViewportBuilder::default()
-            .with_title("Domain Suggest & Checker")
-            .with_inner_size([1100.0, 750.0])
-            .with_icon(load_icon()),
-        ..Default::default()
-    };
-
-    // 3. Mount the GUI and pass the runtime handle to background asynchronous workers
-    let result = eframe::run_native(
-        "Domain Suggest & Checker",
-        options,
-        Box::new(move |cc| Ok(Box::new(ui::App::new(cc, _rt.handle().clone())))),
-    );
-
-    // Ensure pristine shutdown of orphan HTTP socket processes
-    std::process::exit(0);
-}
+### 3. Run
+You can launch the executable located in `target/release/domain-suggest.exe` or run directly using Cargo:
+```bash
+cargo run --release
 ```
 
-Once launched:
-1. Navigate to the **Settings** tab to input your free OpenRouter API key.
-2. Select your target **TLDs** (e.g., `.com`, `.io`, `.ai`).
-3. Return to the **Generator**, specify your keywords/industry, and click **Generate & Check**.
+---
 
-## License
+## 🕹️ Quick Start Guide
 
-This project is open-sourced under the **MIT License**. See the `LICENSE` file for full details.
+1. **Configure Provider:** Navigate to the **⚙️ Settings** tab. Enter an optional but highly recommended [OpenRouter](https://openrouter.ai/) API key, or swap to **Ollama** if you have a local model running on `localhost:11434`.
+2. **Select Scope:** In Settings, toggle which Top-Level Domains you want to target (e.g. `.com`, `.io`, `.ai`).
+3. **Brainstorm:** Switch back to the **🧠 Generator** tab. Enter your core product keywords, industry format, and desired Brand Personality. 
+4. **Deploy:** Click **Generate & Check**. The AI will stream optimized ideas directly back into the GUI, and the background worker thread will concurrently verify the real-world availability of every generated name without ever hanging the interface.
+
+---
+
+## 🤝 Contributing
+
+Contributions, issues, and feature requests are welcome!
+Feel free to check the [issues page](https://github.com/take1dev/Domain-Suggester/issues) if you want to contribute.
+
+## 📝 License
+
+This project is licensed under the **MIT License**. See the `LICENSE` file for more details.
