@@ -1,0 +1,12 @@
+/target/
+*.rar
+*.zip
+/.idea/
+**/*.rs.bk
+*.exe
+*.pdb
+credentials.json
+settings.json
+test_tld.rs
+run.rs
+Rust GUI Domain Name Suggester.md
