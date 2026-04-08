@@ -153,6 +153,9 @@ impl LlmProvider for OpenRouterProvider {
             .post(BASE_URL)
             .header("Authorization", format!("Bearer {}", self.api_key))
             .header("HTTP-Referer", "https://domain-suggest.app")
+            .header("Referer", "https://domain-suggest.app") // Actual referer
+            .header("Origin", "https://domain-suggest.app")
+            .header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36")
             .header("X-Title", "Domain Suggest & Checker")
             .json(&body)
             .send()

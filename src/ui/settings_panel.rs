@@ -53,6 +53,7 @@ pub struct SavedSettings {
     custom_tld: Option<String>,
     custom_tld_enabled: Option<bool>,
     preferred_registrar: Option<PreferredRegistrar>,
+    openrouter_model_idx: Option<usize>,
 }
 
 /// Persistent settings state.
@@ -133,6 +134,7 @@ impl SettingsState {
                 if let Some(v) = saved.custom_tld { state.custom_tld = v; }
                 if let Some(v) = saved.custom_tld_enabled { state.custom_tld_enabled = v; }
                 if let Some(v) = saved.preferred_registrar { state.preferred_registrar = v; }
+                if let Some(v) = saved.openrouter_model_idx { state.openrouter_model_idx = v; }
             }
         }
         
@@ -143,6 +145,7 @@ impl SettingsState {
             custom_tld: Some(state.custom_tld.clone()),
             custom_tld_enabled: Some(state.custom_tld_enabled),
             preferred_registrar: Some(state.preferred_registrar),
+            openrouter_model_idx: Some(state.openrouter_model_idx),
         };
         state.last_saved_json = serde_json::to_string(&saved).unwrap_or_default();
         
@@ -157,6 +160,7 @@ impl SettingsState {
             custom_tld: Some(self.custom_tld.clone()),
             custom_tld_enabled: Some(self.custom_tld_enabled),
             preferred_registrar: Some(self.preferred_registrar),
+            openrouter_model_idx: Some(self.openrouter_model_idx),
         };
         let json = serde_json::to_string(&saved).unwrap_or_default();
         if self.last_saved_json != json {
