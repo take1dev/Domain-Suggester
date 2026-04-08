@@ -38,7 +38,11 @@ pub mod colors {
 
 /// Apply the custom dark theme to the egui context.
 pub fn apply_theme(ctx: &egui::Context) {
-    let mut style = egui::Style::default();
+    // Force egui to ignore OS Light/Dark preference and ALWAYS use Dark
+    ctx.set_visuals(egui::Visuals::dark());
+    ctx.options_mut(|o| o.theme_preference = egui::ThemePreference::Dark);
+
+    let mut style = (*ctx.style()).clone();
 
     // Visuals
     let v = &mut style.visuals;
